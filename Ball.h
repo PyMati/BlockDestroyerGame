@@ -21,6 +21,6 @@ public:
 	bool shouldChangeHorizotalDirection();
 	void move();
 	int generateRandomDirection();
-	void checkCollision(SDL_Rect* palleteRect);
+	void checkCollisionWithPallete(SDL_Rect* palleteRect);
 };
 

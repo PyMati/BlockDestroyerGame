@@ -18,14 +18,16 @@ private:
 	Pallete* pallete;
 	Ball* ball;
 
+	vector<Block*> gameBlocks;
 
-
-public:
-	Game(int windowWidth, int windowHeight);
 	void initScreen();
 	vector<SDL_Texture*> loadSprites();
-	void run(int fps);
+	vector<Block*> initBlocks(vector<SDL_Texture*> textures);
 	void turnOffGame();
 	void manageGameEvent();
 	void manageRendering(int fps);
+
+public:
+	Game(int windowWidth, int windowHeight);
+	void run(int fps);
 };

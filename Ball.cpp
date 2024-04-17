@@ -72,8 +72,6 @@ void Ball::move()
 
 	this->rect.x += (this->ballSpeed * this->leftRightDirection);
 	this->rect.y += (this->ballSpeed * this->upDownDirection);
-
-	std::cout << this->rect.x << "||" << this->rect.y << std::endl;
 }
 
 int Ball::generateRandomDirection()
@@ -88,11 +86,18 @@ int Ball::generateRandomDirection()
 	return randomResult;
 }
 
-void Ball::checkCollision(SDL_Rect* palleteRect)
+void Ball::checkCollisionWithPallete(SDL_Rect* palleteRect)
 {
 	// Pallete width = 60 pallete height = 20
+
+
+	// Boundary cases
+	if ((this->rect.y == palleteRect->y || this->rect.y == palleteRect->y + 20) && (this->rect.x == palleteRect->x || this->rect.x == palleteRect->x + 60)) {
+		this->changeHorizotalDirection();
+		this->changeVerticalDirection();
+	}
 	// Hitting pallete from up and down
-	if (this->rect.x >= palleteRect->x && this->rect.x <= palleteRect->x + 60) {
+	else if (this->rect.x >= palleteRect->x && this->rect.x <= palleteRect->x + 60) {
 		if (this->rect.y == palleteRect->y) {
 			this->rect.y = palleteRect->y - 10;
 			this->changeVerticalDirection();

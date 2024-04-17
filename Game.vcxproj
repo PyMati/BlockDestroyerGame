@@ -152,12 +152,6 @@
     <ClInclude Include="Screen.h" />
     <ClInclude Include="TextureManager.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="C:\Users\Młody\Desktop\PixelArt\DestroyableBlock\pallete.png" />
-    <Image Include="C:\Users\Młody\Desktop\PixelArt\DestroyableBlock\stage1.png" />
-    <Image Include="C:\Users\Młody\Desktop\PixelArt\DestroyableBlock\stage2.png" />
-    <Image Include="C:\Users\Młody\Desktop\PixelArt\DestroyableBlock\stage3.png" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

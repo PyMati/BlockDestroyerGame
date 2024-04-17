@@ -22,6 +22,13 @@
 #define BALL_STARTING_POINT_Y 360
 #define BALL_SPEED 5
 
+#define BLOCKS_COLUMNS 28
+#define BLOCKS_ROWS 5
+
+#define STARTING_BLOCK_POS_X 20
+#define STARTING_BLOCK_POS_Y 60
+#define BLOCK_SIZE 20
+
 Game::Game(int windowWidth, int windowHeight): windowW(windowWidth), windowH(windowHeight)
 {
 	initScreen();
@@ -31,6 +38,8 @@ Game::Game(int windowWidth, int windowHeight): windowW(windowWidth), windowH(win
 
 	this->pallete = new Pallete(PALLETE_STARTING_POINT_X, PALLETE_STARTING_POINT_Y, PALLETE_SPEED, sprites[0]);
 	this->ball = new Ball(BALL_STARTING_POINT_X, BALL_STARTING_POINT_Y, BALL_SPEED, sprites[4]);
+
+	this->gameBlocks = initBlocks(sprites);
 }
 
 void Game::initScreen() {
@@ -60,12 +69,38 @@ vector<SDL_Texture*> Game::loadSprites()
 	return spritesVector;
 }
 
+vector<Block*> Game::initBlocks(vector<SDL_Texture*> textures)
+{
+	// Adding block textures to vector
+	vector<SDL_Texture*> blockTextures;
+	blockTextures.push_back(textures[1]);
+	blockTextures.push_back(textures[2]);
+	blockTextures.push_back(textures[3]);
+
+	vector<Block*> blocks;
+	Block* newBlock;
+	int x;
+	int y;
+
+
+	for (int col_index = 0; col_index < BLOCKS_COLUMNS; col_index++) {
+		for (int row_index = 0; row_index < BLOCKS_ROWS; row_index++) {
+			x = col_index * BLOCK_SIZE + STARTING_BLOCK_POS_X;
+			y = row_index * BLOCK_SIZE + STARTING_BLOCK_POS_Y;
+			newBlock = new Block(x, y, blockTextures);
+			blocks.push_back(newBlock);
+		}
+	}
+
+	return blocks;
+}
+
 void Game::run(int fps)
 {
 	while (shouldRun) {
 		this->manageGameEvent();
 		this->ball->move();
-		this->ball->checkCollision(this->pallete->getDest());
+		this->ball->checkCollisionWithPallete(this->pallete->getDest());
 		this->manageRendering(fps);
 	}
 
@@ -110,8 +145,14 @@ void Game::manageGameEvent()
 void Game::manageRendering(int fps)
 {
 	SDL_RenderClear(screen->getRenderer());
+
+	// Drawing game objects
 	SDL_RenderCopy(screen->getRenderer(), this->pallete->getTexture(), NULL, pallete->getDest());
 	SDL_RenderCopy(screen->getRenderer(), this->ball->getTexture(), NULL, this->ball->getDest());
+	for (int i = 0; i < this->gameBlocks.size(); i++) {
+		SDL_RenderCopy(screen->getRenderer(), gameBlocks[i]->getTexture(), NULL, gameBlocks[i]->getDest());
+	}
+
 	SDL_RenderPresent(screen->getRenderer());
 	SDL_Delay(SECOND_IN_MILISECONDS / fps);
 }
